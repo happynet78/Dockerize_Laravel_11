@@ -5,6 +5,7 @@
     <!-- Basic Page Info -->
     <meta charset="utf-8" />
     <title>@yield('pageTitle')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <!-- Site favicon -->
     <link
@@ -44,6 +45,8 @@
         href="/back/vendors/styles/icon-font.min.css"
     />
     <link rel="stylesheet" type="text/css" href="/back/vendors/styles/style.css" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    @kropifyStyles
     @stack('stylesheets')
 </head>
 <body>
@@ -217,40 +220,7 @@
                     </div>
                 </div>
             </div>
-            <div class="user-info-dropdown">
-                <div class="dropdown">
-                    <a
-                        class="dropdown-toggle"
-                        href="#"
-                        role="button"
-                        data-toggle="dropdown"
-                    >
-                                <span class="user-icon">
-                                    <img src="/back/vendors/images/photo1.jpg" alt="" />
-                                </span>
-                        <span class="user-name">Ross C. Lopez</span>
-                    </a>
-                    <div
-                        class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list"
-                    >
-                        <a class="dropdown-item" href="profile.html"
-                        ><i class="dw dw-user1"></i> Profile</a
-                        >
-                        <a class="dropdown-item" href="profile.html"
-                        ><i class="dw dw-settings2"></i> Setting</a
-                        >
-                        <a class="dropdown-item" href="faq.html"
-                        ><i class="dw dw-help"></i> Help</a
-                        >
-                        <a class="dropdown-item" href="{{ route('admin.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                        ><i class="dw dw-logout"></i> Log Out</a
-                        >
-                        <form action="{{ route('admin.logout') }}" id="logout-form" method="post">
-                            @csrf
-                        </form>
-                    </div>
-                </div>
-            </div>
+            @livewire('admin.top-user-info')
             <div class="github-link">
                 <a href="https://github.com/dropways/deskapp" target="_blank"
                 ><img src="/back/vendors/images/github.svg" alt=""
@@ -496,8 +466,7 @@
 
                     <li>
                         <a
-                            href=""
-                            target="_blank"
+                            href="{{ route('admin.profile') }}"
                             class="dropdown-toggle no-arrow"
                         >
                             <span class="micon fa fa-user-circle"></span>
@@ -506,8 +475,7 @@
                     </li>
                      <li>
                         <a
-                            href=""
-                            target="_blank"
+                            href="{{ route('admin.settings') }}"
                             class="dropdown-toggle no-arrow"
                         >
                             <span class="micon fa fa-cogs"></span>
@@ -537,11 +505,23 @@
         </div>
     </div>
 
-<!-- js -->
-<script src="/back/vendors/scripts/core.js"></script>
-<script src="/back/vendors/scripts/script.min.js"></script>
-<script src="/back/vendors/scripts/process.js"></script>
-<script src="/back/vendors/scripts/layout-settings.js"></script>
-@stack('scirpts')
-</body>
+    <!-- js -->
+    <script src="/back/vendors/scripts/core.js"></script>
+    <script src="/back/vendors/scripts/script.min.js"></script>
+    <script src="/back/vendors/scripts/process.js"></script>
+    <script src="/back/vendors/scripts/layout-settings.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        window.addEventListener('showToastr', function(event) {
+            $().notify({
+                vers: 2,
+                cssClass:event.detail[0].type,
+                html:event.detail[0].message,
+                delay:2500
+            });
+        });
+    </script>
+    @kropifyScripts
+    @stack('scripts')
+    </body>
 </html>
