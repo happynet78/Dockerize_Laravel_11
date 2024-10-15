@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
     laravel_eleven_app:
         platform: linux/amd64

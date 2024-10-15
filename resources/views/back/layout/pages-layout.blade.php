@@ -9,21 +9,10 @@
 
     <!-- Site favicon -->
     <link
-        rel="apple-touch-icon"
-        sizes="180x180"
-        href="/back/vendors/images/apple-touch-icon.png"
-    />
-    <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href="/back/vendors/images/favicon-32x32.png"
-    />
-    <link
         rel="icon"
         type="image/png"
         sizes="16x16"
-        href="/back/vendors/images/favicon-16x16.png"
+        href="/images/site/{{ isset(settings()->site_favicon) ? settings()->site_favicon : '' }}"
     />
 
     <!-- Mobile Specific Metas -->
@@ -33,6 +22,9 @@
     />
 
     <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet"
@@ -44,8 +36,11 @@
         type="text/css"
         href="/back/vendors/styles/icon-font.min.css"
     />
+    <link rel="stylesheet" href="/extra-assets/jquery-ui-1.14.0/jquery-ui.min.css" />
+    <link rel="stylesheet" href="/extra-assets/jquery-ui-1.14.0/jquery-ui.structure.min.css" />
+    <link rel="stylesheet" href="/extra-assets/jquery-ui-1.14.0/jquery-ui.theme.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/back/vendors/styles/style.css" />
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     @kropifyStyles
     @stack('stylesheets')
 </head>
@@ -401,12 +396,12 @@
 
     <div class="left-side-bar">
         <div class="brand-logo">
-            <a href="index.html">
-                <img src="/back/vendors/images/deskapp-logo.svg" alt="" class="dark-logo" />
+            <a href="/">
+                <img src="/images/site/{{ isset(settings()->site_logo) ? settings()->site_logo : '' }}" alt="" class="dark-logo" />
                 <img
-                    src="/back/vendors/images/deskapp-logo-white.svg"
+                    src="/images/site/{{ isset(settings()->site_logo) ? settings()->site_logo : '' }}"
                     alt=""
-                    class="light-logo"
+                    class="light-logo site_logo"
                 />
             </a>
             <div class="close-sidebar" data-toggle="left-sidebar-close">
@@ -425,7 +420,7 @@
                     </li>
 
                     <li>
-                        <a href="" class="dropdown-toggle no-arrow">
+                        <a href="{{ route('admin.categories') }}" class="dropdown-toggle no-arrow">
                                     <span class="micon fa fa-th-list"></span
                                     ><span class="mtext">Categories</span>
                         </a>
@@ -492,9 +487,7 @@
         <div class="pd-ltr-20 xs-pd-20-10">
             <div class="min-height-200px">
 
-                <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
                     @yield('content')
-                </div>
             </div>
             <div class="footer-wrap pd-20 mb-20 card-box">
                 DeskApp - Bootstrap 4 Admin Template By
@@ -510,7 +503,8 @@
     <script src="/back/vendors/scripts/script.min.js"></script>
     <script src="/back/vendors/scripts/process.js"></script>
     <script src="/back/vendors/scripts/layout-settings.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="/extra-assets/jquery-ui-1.14.0/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         window.addEventListener('showToastr', function(event) {
             $().notify({
