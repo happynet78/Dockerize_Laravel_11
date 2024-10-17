@@ -30,4 +30,8 @@ class ParentCategory extends Model
             ]
         ];
     }
+
+    public function children() {
+        return $this->hasMany(Category::class, 'parent', 'id');
+    }
 }

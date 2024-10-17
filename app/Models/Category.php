@@ -26,4 +26,9 @@ class Category extends Model
             ]
         ];
     }
+
+    public function parent_category() {
+        // return $this->hasone(ParentCategory::class, 'id', 'parent');
+        return $this->belongsTo(ParentCategory::class, 'parent', 'id');
+    }
 }
