@@ -218,7 +218,7 @@
             </div>
             @livewire('admin.top-user-info')
             <div class="github-link">
-                <a href="https://github.com/dropways/deskapp" target="_blank"
+                <a href="https://github.com/happynet78" target="_blank"
                 ><img src="/back/vendors/images/github.svg" alt=""
                     /></a>
             </div>
@@ -431,13 +431,13 @@
                     @endif
 
                     <li class="dropdown">
-                        <a href="javascript:;" class="dropdown-toggle">
+                        <a href="javascript:;" class="dropdown-toggle {{ Route::is('admin.add_post') || Route::is('admin.posts') ? 'active' : '' }}">
                             <span class="micon fa fa-newspaper-o"></span>
                             <span class="mtext"> Posts </span>
                         </a>
                         <ul class="submenu">
-                            <li><a href="">New</a></li>
-                            <li><a href="">Posts</a></li>
+                            <li><a href="{{ route('admin.add_post') }}" class="{{ Route::is('admin.add_post') ? 'active' : '' }}">New</a></li>
+                            <li><a href="{{ route('admin.posts') }}" class="{{ Route::is('admin.posts') ? 'active' : '' }}">Posts</a></li>
                         </ul>
                     </li>
                     @if( auth()->user()->type == 'superAdmin' )
@@ -495,7 +495,7 @@
             </div>
             <div class="footer-wrap pd-20 mb-20 card-box">
                 DeskApp - Bootstrap 4 Admin Template By
-                <a href="https://github.com/dropways" target="_blank"
+                <a href="https://github.com/happynet78" target="_blank"
                 >Ankit Hingarajiya</a
                 >
             </div>

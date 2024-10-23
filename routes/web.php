@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PostController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,6 +44,12 @@ Route::prefix('admin')->name('admin.')->group(function() {
                 Route::post('/update-favicon', 'updateFavicon')->name('update_favicon');
                 Route::get('/categories', 'categoriesPage')->name('categories');
             });
+        });
+
+        Route::controller(PostController::class)->group(function() {
+            Route::get('/post/new', 'addPost')->name('add_post');
+            Route::post('/post/create', 'createPost')->name('create_post');
+            Route::get('/posts', 'allPosts')->name('posts');
         });
     });
 });
