@@ -107,4 +107,12 @@ class PostController extends Controller
             }
         }
     }
+
+    public function allPosts(Request $request) {
+        $data = [
+            'pageTitle' => 'All Posts',
+        ];
+
+        return view('back.pages.posts', $data);
+    }
 }
