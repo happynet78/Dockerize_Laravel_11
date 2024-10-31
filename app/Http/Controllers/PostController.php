@@ -46,7 +46,7 @@ class PostController extends Controller
             'title' => 'required|unique:posts,title',
             'content' => 'required',
             'category' => 'required|exists:categories,id',
-            'featured_image' => 'required|mimes:png, jpg, jpeg|max:2048',
+            'featured_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         // Create a new post

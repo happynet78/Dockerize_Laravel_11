@@ -1,8 +1,44 @@
-<div class="flex px-20">
+<div class="flex p-20">
 
     <div class="pb-20 card-box mb-30">
         <div class="row mb-20">
-            Filter here....
+            <div class="col-md-4">
+                <label for="search"><b class="text-secondary">Search</b>:</label>
+                <input wire:model.live="search" type="text" name="search" id="search" class="form-control" placeholder="Search posts...">
+            </div>
+            @if(auth()->user()->type == "superAdmin")
+            <div class="col-md-2">
+                <label for="author"><b class="text-secondary">Author</b>:</label>
+                <select wire:model.live="author" name="author" id="author" class="custom-select form-control">
+                    <option value="">No selected</option>
+                    @foreach(App\Models\User::whereHas('posts')->get() as $user)
+                        <option value="{{  $user->id }}">{{  $user->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+            <div class="col-md-2">
+                <label for="category"><b class="text-secondary">Category</b>:</label>
+                <select wire:model.live="category" name="category" id="category" class="custom-select form-control">
+                    <option value="">No selected</option>
+                    {!! $categories_html !!}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="visibility"><b class="text-secondary">Visibility</b>:</label>
+                <select wire:model.live="visibility" name="visibility" id="visibility" class="custom-select form-control">
+                    <option value="">No selected</option>
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="sort"><b class="text-secondary">Sort By</b>:</label>
+                <select wire:model.live="sortBy" name="sort" id="sort" class="custom-select form-control">
+                    <option value="asc">ASC</option>
+                    <option value="desc">DESC</option>
+                </select>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table table-striped table-auto table-sm">
@@ -53,7 +89,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7">
+                        <td colspan="7" class="text-center items-center justify-between">
                             <span class="text-danger">No post(s)!</span>
                         </td>
                     </tr>
