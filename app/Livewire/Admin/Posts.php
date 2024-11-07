@@ -7,6 +7,7 @@ use App\Models\ParentCategory;
 use App\Models\Post;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\File;
 
 class Posts extends Component
 {
@@ -30,6 +31,10 @@ class Posts extends Component
         'sortBy' => ['except' => ''],
     ];
 
+    protected $listeners = [
+        'deletePostAction',
+    ];
+
     public function updatedSearch() {
         $this->resetPage();
     }
@@ -45,6 +50,7 @@ class Posts extends Component
     }
 
     public function mount() {
+        $this->author = auth()->user()->type == 'superAdmin' ? auth()->user()->id : null;
         $this->post_visibility = $this->visibility == 'public' ? 1 : 0;
         // Prepare categories selection
         $categories_html = '';
@@ -73,6 +79,41 @@ class Posts extends Component
             }
         }
         $this->categories_html = $categories_html;
+    }
+
+    public function deletePost($id) {
+        $this->dispatch('deletePost', ['id' => $id]);
+    }
+
+    public function deletePostAction($id) {
+        $post = Post::findOrFail($id);
+        $path  = "images/posts/";
+        $resized_path = $path . 'resized/';
+        $old_featured_image = $post->featured_imnage;
+
+        // Delete the post featured image
+        if($old_featured_image != '' && File::exists( public_path($path . $old_featured_image) )) {
+            File::delete(public_path($path . $old_featured_image));
+
+            // Delete the resized image
+            if( File::exists( public_path($resized_path . 'resized_' . $old_featured_image) ) ) {
+                File::delete(public_path($resized_path . 'resized_' . $old_featured_image));
+            }
+
+            // Delete the thumbnail image
+            if( File::exists( public_path($resized_path . 'thumb_' . $old_featured_image) ) ) {
+                File::delete(public_path($resized_path . 'thumb_' . $old_featured_image));
+            }
+        }
+
+        // Delete the post
+        $deleted = $post->delete();
+
+        if($deleted) {
+            $this->dispatch('showToast', ['type' => 'success', 'message' => 'Post has been deleted successfully.']);
+        } else {
+            $this->dispatch('showToast', ['type' => 'error', 'message' => 'Something went wrong']);
+        }
     }
 
     public function render()
@@ -107,7 +148,7 @@ class Posts extends Component
                 ->when($this->sortBy, function($query) {
                     $query->orderBy('id', $this->sortBy);
                 })
-                ->where('author', auth()->id())->paginate($this->perPage)
+                ->where('author', auth()->user()->id())->paginate($this->perPage)
         ]);
     }
 }

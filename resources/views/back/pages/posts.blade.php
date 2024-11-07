@@ -30,3 +30,29 @@
 @livewire('admin.posts')
 
 @endsection
+
+@push('scripts')
+    <script>
+        window.addEventListener('deletePost', function(event) {
+            var id = event.detail[0].id;
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You want to delete this post.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.value == true) {
+                    Livewire.dispatch('deletePostAction', [id]);
+                    // Swal.fire({
+                    //     title: "Deleted!",
+                    //     text: "Your file has been deleted.",
+                    //     type: "success"
+                    // });
+                }
+            });
+        });
+    </script>
+@endpush

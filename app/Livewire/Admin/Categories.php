@@ -206,15 +206,20 @@ class Categories extends Component
         $category = Category::findOrFail($id);
 
         // Check if this category has related post(s)
-
-        // Delete category
-        $delete = $category->delete();
-
-        if( $delete ) {
-            $this->dispatch('showToastr', ['type' => 'success', 'message' => 'Category has been deleted successfully.']);
+        if($category->posts->count() > 0) {
+            $count = $category->posts->count();
+            $this->dispatch('showToastr', ['type' => 'error', 'message' => 'This category has ('.$count.') related post(s). Cant not be deleted.']);
         } else {
-            $this->dispatch('showToastr', ['type' => 'error', 'message' => 'Something went wrong!']);
+            // Delete category
+            $delete = $category->delete();
+    
+            if( $delete ) {
+                $this->dispatch('showToastr', ['type' => 'success', 'message' => 'Category has been deleted successfully.']);
+            } else {
+                $this->dispatch('showToastr', ['type' => 'error', 'message' => 'Something went wrong!']);
+            }
         }
+
     }
 
     public function showParentCategoryModelForm() {
